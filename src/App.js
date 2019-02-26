@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
+// Require imports for font awesome icons to use in react app.
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import logo from './logo.svg';
 import './App.css';
+
+import Layout from './components/Layout/Layout';
+import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 
 // Font awesome icons addition to app.
 library.add(faHome);
@@ -13,10 +15,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        <FontAwesomeIcon icon="home" size="lg" title="Home"/>
-          <img src={logo} className="App-logo" alt="logo" />
-        </header>
+        <Layout>
+          <BurgerBuilder></BurgerBuilder>
+        </Layout>
       </div>
     );
   }

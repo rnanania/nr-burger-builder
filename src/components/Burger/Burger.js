@@ -12,7 +12,7 @@ const burger = (props) => {
     }, []);
 
     if(!ingredientCollection.length) {
-        ingredientCollection.push(<p key="build-warning"> Please start adding ingredients to build a yummy burger. </p>);
+        ingredientCollection.push(<p key="build-warning"> Please add ingredients to build a yummy burger. </p>);
     }
     
     return (

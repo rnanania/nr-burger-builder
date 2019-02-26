@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
@@ -18,7 +20,10 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 4
+        totalPrice: 4,
+        minPrice: 4,
+        purchasable: false,
+        purchasing: false
     }
 
     addIngredient = (type) => {
@@ -34,6 +39,7 @@ class BurgerBuilder extends Component {
             totalPrice: totalPrice,
             ingredients: ingredients
         });
+        this.updatePurchasable(totalPrice);
     };
 
     removeIngredient = (type) => {
@@ -52,16 +58,39 @@ class BurgerBuilder extends Component {
             totalPrice: totalPrice,
             ingredients: ingredients
         });
+        this.updatePurchasable(totalPrice);
+    };
+
+    updatePurchasable = (totalPrice) => {
+        this.setState({ purchasable: (totalPrice > this.state.minPrice) });
+    };
+
+    purchase = () => {
+        this.setState({ purchasing: true });
+    };
+
+    cancelPurchase = () => {
+        this.setState({ purchasing: false });
+    };
+
+    continuePurchase = () => {
+        alert('Purchase in continue...');
     };
 
     render () {
         return (
             <Fragment>
+                <Modal show={this.state.purchasing} closeModal={this.cancelPurchase}>
+                    <OrderSummary ingredients={this.state.ingredients} cancelPurchase={this.cancelPurchase} continuePurchase={this.continuePurchase}/>
+                </Modal>
                 <Burger ingredients={this.state.ingredients}></Burger>
                 <BuildControls 
                     ingredients={this.state.ingredients}
+                    price={this.state.totalPrice}
+                    purchasable={this.state.purchasable}
                     ingredientAdded={this.addIngredient}
                     ingredientRemoved={this.removeIngredient}
+                    purchase={this.purchase}
                 ></BuildControls>
             </Fragment>
         );

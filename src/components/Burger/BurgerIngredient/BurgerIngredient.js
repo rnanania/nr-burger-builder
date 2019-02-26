@@ -3,15 +3,7 @@ import PropTypes from 'prop-types';
 
 import './BurgerIngredient.css';
 
-interface Props {
-    type: string,
-}
-
-class BurgerIngredient extends Component<Props> {
-    static propTypes = {
-        type: PropTypes.string.isRequired
-    }
-
+class BurgerIngredient extends Component {
     render() {
         let ingredient = null;
         // Swicth case for Ingredient.
@@ -45,5 +37,9 @@ class BurgerIngredient extends Component<Props> {
         return ingredient;
     }
 };
+
+BurgerIngredient.propTypes = {
+    type: PropTypes.string.isRequired
+}
 
 export default BurgerIngredient;

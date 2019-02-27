@@ -1,13 +1,12 @@
 import React, {Fragment} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
+
 
 import './Layout.css';
 const layout = (props) => {
     return (
         <Fragment>
-            <div>
-                <FontAwesomeIcon icon="home" size="lg" title="Home"/>
-            </div>
+            <Toolbar></Toolbar>
             <main className="Content">
                 {props.children}
             </main>

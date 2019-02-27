@@ -3,7 +3,7 @@ import './BackDrop.css';
 
 const backDrop = (props) => {
     return (
-        props.show ? <div className="BackDrop" onClick={props.closeModal}></div> : null
+        props.show ? <div className="BackDrop" onClick={props.clicked}></div> : null
     );
 };
 

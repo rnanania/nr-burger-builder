@@ -6,7 +6,7 @@ import BackDrop from '../BackDrop/BackDrop';
 class Modal extends Component {
     // Should update only on show props change.
     shouldComponentUpdate(nextProps, nextState){
-        return nextProps.show !== this.props.show;
+        return (nextProps.show !== this.props.show) || (nextProps.children !== this.props.children);
     }
 
     render() {

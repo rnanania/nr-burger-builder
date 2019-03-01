@@ -6,7 +6,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Checkout extends Component {
     state = {
-        ingredients: null
+        ingredients: null,
+        price: 0
     }
     cancelCheckout = () => {
         this.props.history.goBack();
@@ -19,24 +20,32 @@ class Checkout extends Component {
     componentDidMount() {
         const queryParams = new URLSearchParams(this.props.location.search);
         const ingredients = {};
+        let price = 0;
         for (let param of queryParams.entries()) {
-            ingredients[param[0]] = +param[1];
+            if (param[0] === 'price') {
+                price = +param[1]
+            } else {
+                ingredients[param[0]] = +param[1];
+            }
         }
-        this.setState({ingredients: ingredients});
+        this.setState({ ingredients: ingredients, price: price });
     }
 
     render() {
         let checkout = null;
-        if(this.state.ingredients){
+        if (this.state.ingredients) {
             checkout = (
                 <Fragment>
-                    <CheckoutSummary 
-                    ingredients={this.state.ingredients}
-                    cancelCheckout={this.cancelCheckout}
-                    continueCheckout={this.continueCheckout}
+                    <CheckoutSummary
+                        ingredients={this.state.ingredients}
+                        cancelCheckout={this.cancelCheckout}
+                        continueCheckout={this.continueCheckout}
                     />
-                    <Route path={this.props.match.path + '/checkout-contact'} 
-                        render={(props) => (<CheckoutContactData {...props} ingredients={this.state.ingredients}/>)}/>
+                    <Route path={this.props.match.path + '/checkout-contact'}
+                        render={(props) => (
+                            <CheckoutContactData {...props}
+                                ingredients={this.state.ingredients}
+                                price={this.state.price} />)} />
                 </Fragment>
             );
         } else {

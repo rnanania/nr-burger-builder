@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -72,7 +74,10 @@ class CheckoutContactData extends Component {
                         { value: 'cheapest', displayName: 'Cheapest'}
                     ],
                 },
-                value: 'fastest'
+                value: 'fastest',
+                valid: true,
+                validation: {},
+                touched: false
             }
         },
         formIsValid: false,
@@ -89,7 +94,7 @@ class CheckoutContactData extends Component {
 
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price,
+            price: this.props.totalPrice,
             customer: customerInfo
         };
         axios.post('/orders.json', order)
@@ -175,4 +180,11 @@ class CheckoutContactData extends Component {
     }
 }
 
-export default CheckoutContactData;
+const mapStateToProps = (state) => {
+    return{
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
+    }
+};
+
+export default connect(mapStateToProps)(CheckoutContactData);

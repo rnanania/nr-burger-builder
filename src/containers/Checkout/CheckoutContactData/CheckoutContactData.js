@@ -6,10 +6,8 @@ import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import * as orderActions from '../../../store/actions/index';
-
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../axios-orders';
-
 import './CheckoutContactData.css';
 
 class CheckoutContactData extends Component {
@@ -45,7 +43,7 @@ class CheckoutContactData extends Component {
                 },
                 value: '',
                 valid: false,
-                validation: { required: true, minLength: 5, maxLength: 5 },
+                validation: { required: true, minLength: 5, maxLength: 5, isNumber: true },
                 touched: false
             },
             country: {
@@ -67,7 +65,7 @@ class CheckoutContactData extends Component {
                 },
                 value: '',
                 valid: false,
-                validation: { required: true },
+                validation: { required: true, isEmail: true },
                 touched: false
             },
             deliveryMethod: {
@@ -80,7 +78,6 @@ class CheckoutContactData extends Component {
                 },
                 value: 'fastest',
                 valid: true,
-                validation: {},
                 touched: false
             }
         },
@@ -97,27 +94,36 @@ class CheckoutContactData extends Component {
         const orderData = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            customer: customerInfo
+            customer: customerInfo,
+            userId: this.props.userId
         };
-        this.props.purchaseBurger(orderData);
+        this.props.purchaseBurger(orderData, this.props.token);
     }
-
+    
     isValid = (value, rules) => {
+        let validity = true;      
         if(!rules) {
-            return true;
+            validity = true;
+        } else {
+            if(rules.required){
+                validity = (value.trim() !== '') && validity;
+            }
+            if(rules.minLength){
+                validity = (value.length >= rules.minLength) && validity;
+            }
+            if(rules.maxLength){
+                validity = (value.length <= rules.maxLength) && validity;
+            }
+            if(rules.isEmail){
+                const pattern = /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/;
+                validity = pattern.test(value) && validity;
+            }
+            if(rules.isNumber){
+                const pattern = /^[0-9]+$/;
+                validity = pattern.test(value) && validity;
+            }  
         }
-
-        let isValid = true;
-        if(rules.required){
-            isValid = (value.trim() !== '') && isValid;
-        }
-        if(rules.minLength){
-            isValid = (value.length >= rules.minLength) && isValid;
-        }
-        if(rules.maxLength){
-            isValid = (value.length <= rules.maxLength) && isValid;
-        }        
-        return isValid;
+        return validity;
     }
 
     inputChanged = (event, key) => {
@@ -178,13 +184,15 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
-        loading: state.burgerBuilder.loading
+        loading: state.burgerBuilder.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        purchaseBurger: (orderData) => dispatch(orderActions.purchaseBurger(orderData))
+        purchaseBurger: (orderData, token) => dispatch(orderActions.purchaseBurger(orderData, token))
     }
 };
 

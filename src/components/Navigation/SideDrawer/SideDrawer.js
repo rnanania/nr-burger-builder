@@ -11,7 +11,7 @@ const sideDrawer = (props) => {
             <div className={"SideDrawer " + (props.showSideDrawer ? "Open" : "Close")}>
                 <FontAwesomeIcon icon="hamburger" size="4x" title="Home" />
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems isAuthenticated={props.isAuthenticated}/>
                 </nav>
             </div>
         </Fragment>

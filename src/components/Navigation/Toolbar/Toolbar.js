@@ -11,7 +11,7 @@ const toolbar = (props) => {
             </div>
             <FontAwesomeIcon icon="hamburger" size="2x" title="Home"/>
             <nav className="DesktopOnly">
-                <NavigationItems />
+                <NavigationItems isAuthenticated={props.isAuthenticated}/>
             </nav>
             
         </header>

@@ -15,6 +15,12 @@ export const removeIngredient = (ingName) => {
     }    
 }
 
+export const resetIngredients = () => {
+    return {
+        type: actionTypes.RESET_INGREDIENTS
+    }
+}
+
 const setIngredients = (ingredients) => {
     return {
         type: actionTypes.SET_INGREDIENTS,

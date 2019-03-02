@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import CheckoutContactData from '../Checkout/CheckoutContactData/CheckoutContactData';
-import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Checkout extends Component {
     cancelCheckout = () => {
@@ -17,7 +16,8 @@ class Checkout extends Component {
 
     render() {
         let checkout = null;
-        if (this.props.ingredients) {
+        // TODO: set initialPrice to store.
+        if (this.props.ingredients && !this.props.purchased && this.props.totalPrice > 4) {
             checkout = (
                 <Fragment>
                     <CheckoutSummary
@@ -30,21 +30,17 @@ class Checkout extends Component {
                 </Fragment>
             );
         } else {
-            checkout = <Spinner />
+            checkout = <Redirect to="/" />
         }
-
-        return (
-            <div>
-                {checkout}
-            </div>
-        );
+        return checkout;
     }
 }
 
 const mapStateToProps = (state) => {
     return{
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        purchased: state.order.purchased
     }
 };
 

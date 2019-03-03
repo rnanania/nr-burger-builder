@@ -21,7 +21,17 @@ library.add(faBars, faHamburger, faSpinner, faExclamationCircle);
 const Orders = React.lazy(() => import('./containers/Orders/Orders'));
 const Logout = React.lazy(() => import('./containers/Auth/Logout/Logout'));
 
-class App extends Component {
+interface StateProps {
+  isAuthenticated: string
+}
+
+interface DispatchProps {
+  tryAutoLogin: () => void
+}
+
+type Props = StateProps & DispatchProps;
+
+class App extends Component<Props> {
   componentDidMount() {
     this.props.tryAutoLogin();
   }

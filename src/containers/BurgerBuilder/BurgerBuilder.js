@@ -12,14 +12,46 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import * as actions from '../../store/actions/index';
 
-class BurgerBuilder extends Component {
+import { History } from 'history';
+
+// Properties coming from Parent
+interface OwnProps {
+    history: History
+}
+
+// Properties coming from Store State
+interface StateProps {
+    ingredients: object,
+    totalPrice: number,
+    error: boolean,
+    isAuthenticated: string
+}
+
+// Properties coming from Store Dispatch
+interface DispatchProps {
+    initIngredients: () => void,
+    addIngredient: (type:string) => void,
+    removeIngredient: (type:string) => void,
+    initPurchase: () => void
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+// Component Own State properties.
+interface State {
+    minPrice: number,
+    purchasing: boolean,
+    purchaseInProgress: boolean
+}
+
+class BurgerBuilder extends Component<Props, State> {
     state = {
         minPrice: 4,
         purchasing: false,
         purchaseInProgress: false
     }
 
-    updatePurchasable = (totalPrice) => {
+    updatePurchasable = (totalPrice: number) => {
         return (totalPrice > this.state.minPrice);
     };
 
@@ -114,8 +146,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         initIngredients: () => dispatch(actions.initIngredients()),
-        addIngredient: (type) => dispatch(actions.addIngredient(type)),
-        removeIngredient: (type) => dispatch(actions.removeIngredient(type)),
+        addIngredient: (type: string) => dispatch(actions.addIngredient(type)),
+        removeIngredient: (type: string) => dispatch(actions.removeIngredient(type)),
         initPurchase: () => { dispatch(actions.purchaseBurgerInit()) }
     }
 };

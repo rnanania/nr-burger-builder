@@ -44,7 +44,7 @@ interface State {
     purchaseInProgress: boolean
 }
 
-class BurgerBuilder extends Component<Props, State> {
+export class BurgerBuilder extends Component<Props, State> {
     state = {
         minPrice: 4,
         purchasing: false,

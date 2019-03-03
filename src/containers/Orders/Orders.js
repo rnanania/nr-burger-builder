@@ -8,7 +8,23 @@ import * as actions from '../../store/actions/index';
 
 import Order from '../../components/Order/Order';
 
-class Orders extends Component {
+// Properties coming from Store State
+interface StateProps {
+    //TODO: Define proper type -- Array of Order.
+    orders: [any],
+    loading: boolean,
+    token: string,
+    userId: string
+}
+
+// Properties coming from Store Dispatch
+interface DispatchProps {
+    fetchOrders: (token:string, userId:string) => void
+}
+
+type Props = StateProps & DispatchProps;
+
+class Orders extends Component<Props> {
     componentDidMount() {
         this.props.fetchOrders(this.props.token, this.props.userId);
     }
@@ -44,6 +60,5 @@ const mapDispatchToProps = (dispatch) => {
         fetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

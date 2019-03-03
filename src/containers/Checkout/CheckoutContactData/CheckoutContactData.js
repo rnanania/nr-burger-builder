@@ -12,7 +12,34 @@ import * as actions from '../../../store/actions/index';
 
 import './CheckoutContactData.css';
 
-class CheckoutContactData extends Component {
+// Properties coming from Parent
+interface OwnProps {
+    history: History
+}
+
+// Properties coming from Store State
+interface StateProps {
+    ingredients: object,
+    totalPrice: number,
+    loading: boolean,
+    token: string,
+    userId: string
+}
+
+// Properties coming from Store Dispatch
+interface DispatchProps {
+    purchaseBurger: (orderData: object, token:string) => void
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+// Component Own State properties.
+interface State {
+    orderForm: object,
+    formIsValid: boolean
+}
+
+class CheckoutContactData extends Component<Props, State> {
     state = {
         orderForm: {
             name: {

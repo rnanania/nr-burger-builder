@@ -10,7 +10,28 @@ import * as actions from '../../store/actions/index';
 
 import './Auth.css';
 
-class Auth extends Component {
+// Properties coming from Store State
+interface StateProps {
+    token: string,
+    loading: boolean,
+    error?: { message: string}
+}
+
+// Properties coming from Store Dispatch
+interface DispatchProps {
+    auth: (email: string, password: string, isSignUp: boolean) => void
+}
+
+type Props = StateProps & DispatchProps;
+
+// Component Own State properties.
+interface State {
+    controls: object,
+    formIsValid: boolean,
+    isSignUp: boolean
+}
+
+class Auth extends Component<Props, State> {
     state = {
         controls: {
             email: {

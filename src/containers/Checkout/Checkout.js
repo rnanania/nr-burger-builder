@@ -5,7 +5,25 @@ import { connect } from 'react-redux';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import CheckoutContactData from '../Checkout/CheckoutContactData/CheckoutContactData';
 
-class Checkout extends Component {
+import { History } from 'history';
+
+// Properties coming from Parent
+interface OwnProps {
+    history: History,
+    // TODO: Find appropriate type for this.
+    match: any
+}
+
+// Properties coming from Store Dispatch
+interface StateProps {
+    ingredients: object,
+    totalPrice: number,
+    purchased: boolean
+}
+
+type Props = StateProps & OwnProps;
+
+class Checkout extends Component<Props> {
     cancelCheckout = () => {
         this.props.history.goBack();
     }

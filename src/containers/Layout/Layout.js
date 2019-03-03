@@ -6,7 +6,14 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 
 import './Layout.css';
 
-class Layout extends Component {
+// Properties coming from Store Dispatch
+interface StateProps {
+    isAuthenticated: string
+}
+
+type Props = StateProps;
+
+class Layout extends Component<Props> {
     state = {
         showSideDrawer: false
     };

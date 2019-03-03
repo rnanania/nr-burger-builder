@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import './BurgerIngredient.css';
 
-class BurgerIngredient extends Component {
+interface Props {
+    type: string
+};
+
+class BurgerIngredient extends Component<Props> {
     render() {
         let ingredient = null;
         // Swicth case for Ingredient.
@@ -37,9 +40,5 @@ class BurgerIngredient extends Component {
         return ingredient;
     }
 };
-
-BurgerIngredient.propTypes = {
-    type: PropTypes.string.isRequired
-}
 
 export default BurgerIngredient;

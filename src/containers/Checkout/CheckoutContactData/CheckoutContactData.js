@@ -4,17 +4,19 @@ import { connect } from 'react-redux';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { checkValidity } from '../../../Shared/utility';
 
-import * as orderActions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../axios-orders';
+import * as actions from '../../../store/actions/index';
+
 import './CheckoutContactData.css';
 
 class CheckoutContactData extends Component {
     state = {
         orderForm: {
             name: {
-                elementType: 'input', 
+                elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Your Name'
@@ -25,7 +27,7 @@ class CheckoutContactData extends Component {
                 touched: false
             },
             street: {
-                elementType: 'input', 
+                elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Street Address'
@@ -36,7 +38,7 @@ class CheckoutContactData extends Component {
                 touched: false
             },
             zip: {
-                elementType: 'input', 
+                elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Postal Code'
@@ -47,7 +49,7 @@ class CheckoutContactData extends Component {
                 touched: false
             },
             country: {
-                elementType: 'input', 
+                elementType: 'input',
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Country'
@@ -58,7 +60,7 @@ class CheckoutContactData extends Component {
                 touched: false
             },
             email: {
-                elementType: 'input', 
+                elementType: 'input',
                 elementConfig: {
                     type: 'email',
                     placeholder: 'Your Email'
@@ -69,11 +71,11 @@ class CheckoutContactData extends Component {
                 touched: false
             },
             deliveryMethod: {
-                elementType: 'select', 
+                elementType: 'select',
                 elementConfig: {
                     options: [
-                        { value: 'fastest', displayName: 'Fastest'},
-                        { value: 'cheapest', displayName: 'Cheapest'}
+                        { value: 'fastest', displayName: 'Fastest' },
+                        { value: 'cheapest', displayName: 'Cheapest' }
                     ],
                 },
                 value: 'fastest',
@@ -87,7 +89,7 @@ class CheckoutContactData extends Component {
     submitOrder = (event) => {
         event.preventDefault();
         const customerInfo = {};
-        for(let key in this.state.orderForm) {
+        for (let key in this.state.orderForm) {
             customerInfo[key] = this.state.orderForm[key].value;
         }
 
@@ -99,32 +101,6 @@ class CheckoutContactData extends Component {
         };
         this.props.purchaseBurger(orderData, this.props.token);
     }
-    
-    isValid = (value, rules) => {
-        let validity = true;      
-        if(!rules) {
-            validity = true;
-        } else {
-            if(rules.required){
-                validity = (value.trim() !== '') && validity;
-            }
-            if(rules.minLength){
-                validity = (value.length >= rules.minLength) && validity;
-            }
-            if(rules.maxLength){
-                validity = (value.length <= rules.maxLength) && validity;
-            }
-            if(rules.isEmail){
-                const pattern = /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/;
-                validity = pattern.test(value) && validity;
-            }
-            if(rules.isNumber){
-                const pattern = /^[0-9]+$/;
-                validity = pattern.test(value) && validity;
-            }  
-        }
-        return validity;
-    }
 
     inputChanged = (event, key) => {
         const updatedOrderForm = {
@@ -132,13 +108,13 @@ class CheckoutContactData extends Component {
         }
         updatedOrderForm[key].touched = true;
         updatedOrderForm[key].value = event.target.value;
-        updatedOrderForm[key].valid = this.isValid(event.target.value, updatedOrderForm[key].validation);
+        updatedOrderForm[key].valid = checkValidity(event.target.value, updatedOrderForm[key].validation);
 
         let formIsValid = true;
-        for(let key in updatedOrderForm){
+        for (let key in updatedOrderForm) {
             formIsValid = updatedOrderForm[key].valid && formIsValid;
         }
-        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     }
 
     render() {
@@ -147,7 +123,7 @@ class CheckoutContactData extends Component {
             form = <Spinner />
         } else {
             let formElementsArr = [];
-            for(let key in this.state.orderForm){
+            for (let key in this.state.orderForm) {
                 formElementsArr.push({
                     key: key,
                     element: this.state.orderForm[key]
@@ -158,12 +134,12 @@ class CheckoutContactData extends Component {
                 <form onSubmit={this.submitOrder}>
                     {formElementsArr.map(formElement => {
                         return (
-                            <Input key={formElement.key} 
-                                elementType={formElement.element.elementType} 
+                            <Input key={formElement.key}
+                                elementType={formElement.element.elementType}
                                 elementConfig={formElement.element.elementConfig}
                                 invalid={!formElement.element.valid}
                                 touched={formElement.element.touched}
-                                changed={(event) => this.inputChanged(event, formElement.key)}/>
+                                changed={(event) => this.inputChanged(event, formElement.key)} />
                         );
                     })}
                     <Button btnType="Success" disabled={!this.state.formIsValid}>Submit</Button>
@@ -192,8 +168,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        purchaseBurger: (orderData, token) => dispatch(orderActions.purchaseBurger(orderData, token))
+        purchaseBurger: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(CheckoutContactData,axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(CheckoutContactData, axios));

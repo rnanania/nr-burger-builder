@@ -16,7 +16,6 @@ const logger = (state) => {
     return next => {
         return action => {
             const result = next(action);
-            console.info('[MIddleWare: ]', action, state.getState());
             return result;
         }
     }
@@ -28,7 +27,7 @@ const rootReducers = combineReducers({
     auth: authReducer
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 const store = createStore(rootReducers, composeEnhancers(applyMiddleware(logger, thunk)));
 
 const app = (

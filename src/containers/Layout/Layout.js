@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+
 import './Layout.css';
 
 class Layout extends Component {
@@ -11,22 +12,22 @@ class Layout extends Component {
     };
 
     closeSideDrawer = () => {
-        this.setState({showSideDrawer : false});
+        this.setState({ showSideDrawer: false });
     };
 
     toggleSideDrawer = () => {
-        const showSideDrawer  = this.state.showSideDrawer;
-        this.setState({showSideDrawer : !showSideDrawer });
+        const showSideDrawer = this.state.showSideDrawer;
+        this.setState({ showSideDrawer: !showSideDrawer });
     };
 
-    render () {
+    render() {
         return (
             <Fragment>
-                <Toolbar toggleSideDrawer={this.toggleSideDrawer} isAuthenticated={this.props.isAuthenticated}/>
-                <SideDrawer 
-                    showSideDrawer={this.state.showSideDrawer} 
+                <Toolbar toggleSideDrawer={this.toggleSideDrawer} isAuthenticated={this.props.isAuthenticated} />
+                <SideDrawer
+                    showSideDrawer={this.state.showSideDrawer}
                     closeSideDrawer={this.closeSideDrawer}
-                    isAuthenticated={this.props.isAuthenticated}/>
+                    isAuthenticated={this.props.isAuthenticated} />
                 <main className="Content">
                     {this.props.children}
                 </main>

@@ -12,7 +12,7 @@ export const removeIngredient = (ingName) => {
     return {
         type: actionTypes.REMOVE_INGREDIENT,
         ingName: ingName
-    }    
+    }
 }
 
 export const resetIngredients = () => {
@@ -37,11 +37,11 @@ const fetchIngredientsFailed = () => {
 export const initIngredients = () => {
     return dispatch => {
         axios.get('/ingredients.json')
-        .then(response => {
-            dispatch(setIngredients(response.data));
-        })
-        .catch(error => {
-            dispatch(fetchIngredientsFailed());
-        });
+            .then(response => {
+                dispatch(setIngredients(response.data));
+            })
+            .catch(error => {
+                dispatch(fetchIngredientsFailed());
+            });
     }
 }

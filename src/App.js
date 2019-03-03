@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from './store/actions/index';
 
 // Require imports for font awesome icons to use in react app.
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHamburger, faBars, faSpinner, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
+import * as actions from './store/actions/index';
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
@@ -30,9 +30,9 @@ class App extends Component {
           <Switch>
             {this.props.isAuthenticated ? <Route path="/checkout" component={Checkout} /> : null}
             <Route path="/builder" component={BurgerBuilder} />
-            {this.props.isAuthenticated ? <Route path="/orders" component={Orders} />: null}
+            {this.props.isAuthenticated ? <Route path="/orders" component={Orders} /> : null}
             <Route path="/login" component={Auth} />
-            {this.props.isAuthenticated ? <Route path="/logout" component={Logout} />: null}
+            {this.props.isAuthenticated ? <Route path="/logout" component={Logout} /> : null}
             <Redirect from="/" to="/builder" />
           </Switch>
         </Layout>
@@ -52,6 +52,5 @@ const mapDispatchToProps = (dispatch) => {
     tryAutoLogin: () => dispatch(actions.authCheckState())
   }
 };
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

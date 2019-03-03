@@ -1,3 +1,6 @@
 .Content {
     margin-top: 72px;
+    min-height: calc(100vh - 72px);
+    display: block;
+    position:relative;
 }

@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
-
-import * as actions from '../../store/actions/index';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Spinner from '../../components/UI/Spinner/Spinner';
-
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
     state = {
@@ -24,7 +24,7 @@ class BurgerBuilder extends Component {
     };
 
     purchase = () => {
-        if(this.props.isAuthenticated) {
+        if (this.props.isAuthenticated) {
             this.setState({ purchasing: true });
         } else {
             this.props.history.push('/login');
@@ -41,7 +41,7 @@ class BurgerBuilder extends Component {
     };
 
     componentDidMount() {
-        if(!this.props.ingredients) {
+        if (!this.props.ingredients) {
             this.props.initIngredients();
         }
     }
@@ -51,7 +51,7 @@ class BurgerBuilder extends Component {
         let orderSummary = null;
 
         // Spinner until ingredients fetched.    
-        if(!this.props.ingredients){
+        if (!this.props.ingredients) {
             burger = <Spinner />
         } else {
             burger = (
@@ -63,7 +63,7 @@ class BurgerBuilder extends Component {
                         purchasable={this.updatePurchasable(this.props.totalPrice)}
                         ingredientAdded={(type) => this.props.addIngredient(type)}
                         ingredientRemoved={(type) => this.props.removeIngredient(type)}
-                        isAuthenticated = {this.props.isAuthenticated}
+                        isAuthenticated={this.props.isAuthenticated}
                         purchase={this.purchase}
                     ></BuildControls>
                 </Fragment>
@@ -82,10 +82,10 @@ class BurgerBuilder extends Component {
         }
 
         // Error Handling
-        if(this.props.error) {
-            burger = (                
+        if (this.props.error) {
+            burger = (
                 <p>
-                    <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error"/>
+                    <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error" />
                     <strong> Ingredients can't be loaded at this moment.</strong>
                 </p>
             )
@@ -102,7 +102,7 @@ class BurgerBuilder extends Component {
     }
 }
 
-const mapStateToProps = state =>  {
+const mapStateToProps = state => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
@@ -116,8 +116,8 @@ const mapDispatchToProps = dispatch => {
         initIngredients: () => dispatch(actions.initIngredients()),
         addIngredient: (type) => dispatch(actions.addIngredient(type)),
         removeIngredient: (type) => dispatch(actions.removeIngredient(type)),
-        initPurchase: () => {dispatch(actions.purchaseBurgerInit())}
+        initPurchase: () => { dispatch(actions.purchaseBurgerInit()) }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder,axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

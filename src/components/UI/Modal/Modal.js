@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import './Modal.css';
 import BackDrop from '../BackDrop/BackDrop';
-
+import './Modal.css';
 
 class Modal extends Component {
     // Should update only on show props change.
-    shouldComponentUpdate(nextProps, nextState){
+    shouldComponentUpdate(nextProps, nextState) {
         return (nextProps.show !== this.props.show) || (nextProps.children !== this.props.children);
     }
 

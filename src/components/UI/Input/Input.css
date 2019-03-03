@@ -9,7 +9,7 @@
     display: block;
 }
 
-.Input .InputElement{
+.Input .InputElement {
     outline: none;
     border: 1px solid #CCC;
     padding: 6px 10px;
@@ -17,7 +17,7 @@
     box-sizing: border-box;
 }
 
-.Input .InputElement.invalid{
+.Input .InputElement.invalid {
     border: 1px solid red;
 }
 

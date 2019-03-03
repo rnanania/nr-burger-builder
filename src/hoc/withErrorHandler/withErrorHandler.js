@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import Modal from '../../components/UI/Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Modal from '../../components/UI/Modal/Modal';
 
-// TODO: DO this different way than creating axios interceprot here.
 const withErrorHandler = (WrappedComponent, axios) => {
     return class extends Component {
         reqInterceptor = null;
@@ -32,20 +31,20 @@ const withErrorHandler = (WrappedComponent, axios) => {
             this.setState({ error: null })
         }
 
-        render () {
+        render() {
             return (
                 <Fragment>
-                    <Modal 
+                    <Modal
                         show={this.state.error}
                         closeModal={this.errorConfirmation}>
-                        <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error"/>
+                        <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error" />
                         <strong>{(this.state.error && this.state.error.message) ? this.state.error.message : null}</strong>
                     </Modal>
-                    <WrappedComponent {...this.props}/>
+                    <WrappedComponent {...this.props} />
                 </Fragment>
             );
         }
-    } 
+    }
 };
 
 export default withErrorHandler;

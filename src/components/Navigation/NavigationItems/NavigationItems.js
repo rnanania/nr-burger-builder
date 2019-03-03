@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import './NavigationItems.css';
-
 import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = (props) => {

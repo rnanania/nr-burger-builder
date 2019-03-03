@@ -33,14 +33,14 @@ export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
         axios.post('/orders.json?auth=' + token, orderData)
-        .then(response => {
-            dispatch(purchaseBurgerSuccess(response.data.name, orderData));
-            // Reset ingredients on successfull order execution.
-            dispatch(resetIngredients())
-        })
-        .catch(error => {
-            dispatch(purchaseBurgerFailed(error));
-        });
+            .then(response => {
+                dispatch(purchaseBurgerSuccess(response.data.name, orderData));
+                // Reset ingredients on successfull order execution.
+                dispatch(resetIngredients())
+            })
+            .catch(error => {
+                dispatch(purchaseBurgerFailed(error));
+            });
     }
 }
 
@@ -68,18 +68,18 @@ export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
         axios.get('/orders.json?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"')
-        .then(response => {
-            const orders = [];
-            for(let key in response.data){
-                orders.push({
-                    ...response.data[key],
-                    id: key
-                });
-            }
-            dispatch(fetchOrdersSuccess(orders));
-        })
-        .catch(error => {
-            dispatch(fetchOrdersFailed(error));
-        });
+            .then(response => {
+                const orders = [];
+                for (let key in response.data) {
+                    orders.push({
+                        ...response.data[key],
+                        id: key
+                    });
+                }
+                dispatch(fetchOrdersSuccess(orders));
+            })
+            .catch(error => {
+                dispatch(fetchOrdersFailed(error));
+            });
     }
 }

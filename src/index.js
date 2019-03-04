@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
+//import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import * as serviceWorker from './serviceWorker';
 
@@ -32,7 +32,7 @@ const logger = (state) => {
 
 const sagaMiddleWare = createSagaMiddleware();
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] : null) || compose;
-const store = createStore(rootReducers, composeEnhancers(applyMiddleware(logger, thunk, sagaMiddleWare)));
+const store = createStore(rootReducers, composeEnhancers(applyMiddleware(logger, sagaMiddleWare)));
 
 sagaMiddleWare.run(watchAuth);
 sagaMiddleWare.run(watchBurgerBuilder);

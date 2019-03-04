@@ -3,9 +3,9 @@ import { put, delay } from 'redux-saga/effects';
 import * as actions from '../actions/index';
 
 export function* authLogoutSaga() {
-    yield localStorage.removeItem('idToken');
-    yield localStorage.removeItem('localId');
-    yield localStorage.removeItem('expirationTime');
+    localStorage.removeItem('idToken');
+    localStorage.removeItem('localId');
+    localStorage.removeItem('expirationTime');
     yield put(actions.authLogoutAction());
 }
 
@@ -22,9 +22,9 @@ export function* authSaga(action) {
         const response = yield axios.post(authURL + 'AIzaSyDeaWB_JvTg0vxAr11UGm91_kUl-FF5ToQ', useInfo);
         const expiresIn = response.data.expiresIn ? response.data.expiresIn * 1000 : 3600 * 1000;
         const expirationTime = String(new Date(new Date().getTime() + expiresIn).getTime());
-        yield localStorage.setItem('idToken', response.data.idToken);
-        yield localStorage.setItem('localId', response.data.localId);
-        yield localStorage.setItem('expirationTime', expirationTime);
+        localStorage.setItem('idToken', response.data.idToken);
+        localStorage.setItem('localId', response.data.localId);
+        localStorage.setItem('expirationTime', expirationTime);
         yield put(actions.authSuccess(response.data));
         yield put(actions.autoLogout(expiresIn));
     } catch (error) {

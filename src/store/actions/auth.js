@@ -37,7 +37,7 @@ export const autoLogout = (expiresIn) => {
     return {
         type: actionTypes.AUTO_LOGOUT_IN_QUEUE,
         expiresIn
-    }    
+    }
 }
 
 export const auth = (email, password, isSignUp) => {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { put , delay } from 'redux-saga/effects';
+import { put, delay } from 'redux-saga/effects';
 import * as actions from '../actions/index';
 
 export function* authLogoutSaga() {
@@ -26,8 +26,8 @@ export function* authSaga(action) {
         yield localStorage.setItem('localId', response.data.localId);
         yield localStorage.setItem('expirationTime', expirationTime);
         yield put(actions.authSuccess(response.data));
-        yield put(actions.autoLogout(expiresIn));    
-    } catch(error) {
+        yield put(actions.autoLogout(expiresIn));
+    } catch (error) {
         yield put(actions.authFailed(error.response.data.error));
     }
 }

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -23,35 +23,33 @@ interface StateProps {
 
 type Props = StateProps & OwnProps;
 
-class Checkout extends Component<Props> {
-    cancelCheckout = () => {
-        this.props.history.goBack();
+const checkout = (props: Props) => {
+    const cancelCheckout = () => {
+        props.history.goBack();
     }
 
-    continueCheckout = () => {
-        this.props.history.replace('/checkout/checkout-contact');
+    const continueCheckout = () => {
+        props.history.replace('/checkout/checkout-contact');
     }
 
-    render() {
-        let checkout = null;
-        // TODO: set initialPrice to store.
-        if (this.props.ingredients && !this.props.purchased && this.props.totalPrice > 4) {
-            checkout = (
-                <Fragment>
-                    <CheckoutSummary
-                        ingredients={this.props.ingredients}
-                        cancelCheckout={this.cancelCheckout}
-                        continueCheckout={this.continueCheckout}
-                    />
-                    <Route path={this.props.match.path + '/checkout-contact'}
-                        component={CheckoutContactData} />
-                </Fragment>
-            );
-        } else {
-            checkout = <Redirect to="/" />
-        }
-        return checkout;
+    let checkoutDom = null;
+    // TODO: set initialPrice to store.
+    if (props.ingredients && !props.purchased && props.totalPrice > 4) {
+        checkoutDom = (
+            <Fragment>
+                <CheckoutSummary
+                    ingredients={props.ingredients}
+                    cancelCheckout={cancelCheckout}
+                    continueCheckout={continueCheckout}
+                />
+                <Route path={props.match.path + '/checkout-contact'}
+                    component={CheckoutContactData} />
+            </Fragment>
+        );
+    } else {
+        checkoutDom = <Redirect to="/" />
     }
+    return checkoutDom;
 }
 
 const mapStateToProps = (state) => {
@@ -62,4 +60,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(Checkout);
+export default connect(mapStateToProps)(checkout);

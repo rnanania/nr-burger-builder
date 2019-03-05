@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { connect } from 'react-redux';
 
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
@@ -6,41 +6,40 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 
 import './Layout.css';
 
+// Properties coming from parent Component
+interface OwnProps {
+    children: any
+}
+
 // Properties coming from Store Dispatch
 interface StateProps {
     isAuthenticated: string
 }
 
-type Props = StateProps;
+type Props = OwnProps & StateProps;
 
-class Layout extends Component<Props> {
-    state = {
-        showSideDrawer: false
+const layout = (props: Props) => {
+    const [showSideDrawer, setShowSideDrawer] = useState(false);
+    const closeSideDrawer = () => {
+        setShowSideDrawer(false);
     };
 
-    closeSideDrawer = () => {
-        this.setState({ showSideDrawer: false });
+    const toggleSideDrawer = () => {
+        setShowSideDrawer(!showSideDrawer);
     };
 
-    toggleSideDrawer = () => {
-        const showSideDrawer = this.state.showSideDrawer;
-        this.setState({ showSideDrawer: !showSideDrawer });
-    };
-
-    render() {
-        return (
-            <Fragment>
-                <Toolbar toggleSideDrawer={this.toggleSideDrawer} isAuthenticated={this.props.isAuthenticated} />
-                <SideDrawer
-                    showSideDrawer={this.state.showSideDrawer}
-                    closeSideDrawer={this.closeSideDrawer}
-                    isAuthenticated={this.props.isAuthenticated} />
-                <main className="Content">
-                    {this.props.children}
-                </main>
-            </Fragment>
-        );
-    }
+    return (
+        <Fragment>
+            <Toolbar toggleSideDrawer={toggleSideDrawer} isAuthenticated={props.isAuthenticated} />
+            <SideDrawer
+                showSideDrawer={showSideDrawer}
+                closeSideDrawer={closeSideDrawer}
+                isAuthenticated={props.isAuthenticated} />
+            <main className="Content">
+                {props.children}
+            </main>
+        </Fragment>
+    );
 }
 
 const mapStateToProps = (state) => {
@@ -49,4 +48,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps)(layout);

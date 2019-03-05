@@ -1,49 +1,22 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../../components/UI/Modal/Modal';
+import useHttpErrorHandler from '../../hooks/http-error-handler';
 
 const withErrorHandler = (WrappedComponent, axios) => {
-    return class extends Component {
-        reqInterceptor = null;
-        resInterceptor = null;
-
-        state = {
-            error: null
-        }
-
-        componentWillMount() {
-            this.reqInterceptor = axios.interceptors.request.use(req => {
-                this.setState({ error: null });
-                return req;
-            });
-
-            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
-                this.setState({ error: error });
-            });
-        }
-
-        componentWillUnmount() {
-            axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.resInterceptor);
-        }
-
-        errorConfirmation = () => {
-            this.setState({ error: null })
-        }
-
-        render() {
-            return (
-                <Fragment>
-                    <Modal
-                        show={this.state.error}
-                        closeModal={this.errorConfirmation}>
-                        <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error" />
-                        <strong>{(this.state.error && this.state.error.message) ? this.state.error.message : null}</strong>
-                    </Modal>
-                    <WrappedComponent {...this.props} />
-                </Fragment>
-            );
-        }
+    return props => {
+        const [error, errorConfirmation] = useHttpErrorHandler(axios);
+        return (
+            <Fragment>
+                <Modal
+                    show={error}
+                    closeModal={errorConfirmation}>
+                    <FontAwesomeIcon icon="exclamation-circle" size="lg" title="Error" />
+                    <strong>{(error && error.message) ? error.message : null}</strong>
+                </Modal>
+                <WrappedComponent {...props} />
+            </Fragment>
+        );
     }
 };
 

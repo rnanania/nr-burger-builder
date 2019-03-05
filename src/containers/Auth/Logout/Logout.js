@@ -1,25 +1,15 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 
-// Properties coming from Store Dispatch
-interface DispatchProps {
-    logout: () => void
-}
-
-type Props = DispatchProps;
-
-class Logout extends Component<Props> {
-    componentDidMount() {
-        this.props.logout();
-    }
-
-    render() {
-        return (
-            <Redirect to="/login" />
-        );
-    }
+const logout = (props) => {
+    useEffect(() => {
+        props.logout();
+    }, [])
+    return (
+        <Redirect to="/login" />
+    );
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -28,4 +18,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(Logout);
+export default connect(null, mapDispatchToProps)(logout);
